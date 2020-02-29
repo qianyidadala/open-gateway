@@ -13,7 +13,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * OpenGatewayApplication for Spring Cloud
@@ -22,7 +21,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @Slf4j
 //@EnableEurekaClient
-@EnableFeignClients
 @SpringBootApplication
 public class OpenGatewayApplication implements ApplicationRunner {
 
