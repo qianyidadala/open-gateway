@@ -30,7 +30,7 @@ public class RouterChainBuilder {
         chainHandlers = new LinkedList<>();
     }
 
-    public RouterChainBuilder addRouterHandler(@NonNull AbstractChainHandler handler) {
+    public RouterChainBuilder addHandler(@NonNull AbstractChainHandler handler) {
         this.chainHandlers.add(handler);
         return this;
     }

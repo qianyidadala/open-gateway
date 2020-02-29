@@ -8,10 +8,10 @@
 package com.icefrog.opengateway.springcloud.api;
 
 import com.icefrog.opengateway.common.web.ApiBaseController;
-import com.icefrog.opengateway.springcloud.config.OpenGatewayConfig;
-import com.icefrog.opengateway.springcloud.config.OpenGatewayProxyRule;
 import com.icefrog.opengateway.springcloud.config.RuntimeConfig;
+import com.icefrog.opengateway.springcloud.core.OpenGatewayContext;
 import com.icefrog.opengateway.springcloud.router.*;
+import com.icefrog.opengateway.springcloud.rpc.RpcBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ApiProxyController extends ApiBaseController {
 
     @Autowired
-    private RuntimeConfig runtimeConfig;
+    private OpenGatewayContext openGatewayContext;
 
     @Bean
     @LoadBalanced
@@ -42,27 +42,26 @@ public class ApiProxyController extends ApiBaseController {
 
     @RequestMapping("/**")
     public void proxy(HttpServletRequest request) {
-        String url = request.getRequestURI();
 
-        OpenGatewayConfig openGatewayConfig = runtimeConfig.getOpenGatewayConfig();
-        OpenGatewayProxyRule openGatewayProxyRule = runtimeConfig.getOpenGatewayProxyRule();
-
-
-        // 初始化责任链
+        // 初始化路由链
         RouterChainBuilder routerChainBuilder = new RouterChainBuilder();
         routerChainBuilder
-                .addRouterHandler(new LimiterRouterHandler())
-                .addRouterHandler(new TokenRouterHandler())
-                .addRouterHandler(new SecurityRouterHandler())
-                .addRouterHandler(new DecipherRouterHandler())
-                .addRouterHandler(new LoadBalanceRouterHandler())
+                .addHandler(new LimiterRouterHandler())
+                .addHandler(new TokenRouterHandler())
+                .addHandler(new SecurityRouterHandler())
+                .addHandler(new DecipherRouterHandler())
+                .addHandler(new LoadBalanceRouterHandler())
                 .setContext(null)
                 .run();
 
         // 初始化调用链
-
-         System.out.println("do proxy :" + url);
-
+        RuntimeConfig runtimeConfig = openGatewayContext.getRuntimeConfig();
+        RpcBuilder rpcBuilder = new RpcBuilder();
+        rpcBuilder
+                .setUri(request.getRequestURI(), true)
+                .setRetryCount(runtimeConfig.getOpenGatewayConfig().getRetryCount())
+                .setTimeout(runtimeConfig.getOpenGatewayConfig().getRetryCount())
+                .getRpc()
+                .invoke(getRestTemplate());
     }
-
 }
