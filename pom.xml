@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.icefrog</groupId>
+  <artifactId>open-gateway</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>open-gateway-common</module>
+    <module>open-gateway-springcloud</module>
+    <module>open-gateway-dubbo</module>
+    <module>open-gateway-http</module>
+    <module>open-gateway-local</module>
+    <module>open-gateway-monitor</module>
+    <module>open-gateway-example</module>
+    <module>open-gateway-example/open-gateway-springcloud-example</module>
+    <module>open-gateway-example/open-gateway-dubbo-example</module>
+    <module>open-gateway-example/open-gateway-http-example</module>
+    <module>open-gateway-example/open-gateway-local-example</module>
+  </modules>
+  <packaging>pom</packaging>
+  <name>open-gateway</name>
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencyManagement>
+
+  </dependencyManagement>
+  <dependencies>
+
+  </dependencies>
+</project>
