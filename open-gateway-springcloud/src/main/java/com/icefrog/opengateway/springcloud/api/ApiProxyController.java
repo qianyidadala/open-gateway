@@ -7,6 +7,8 @@
 
 package com.icefrog.opengateway.springcloud.api;
 
+import com.icefrog.opengateway.common.base.HttpProtocol;
+import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.common.web.ApiBaseController;
 import com.icefrog.opengateway.springcloud.config.RuntimeConfig;
 import com.icefrog.opengateway.springcloud.core.OpenGatewayContext;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URISyntaxException;
 
 /**
  * @author IceFrog
@@ -41,7 +44,7 @@ public class ApiProxyController extends ApiBaseController {
 
 
     @RequestMapping("/**")
-    public void proxy(HttpServletRequest request) {
+    public void proxy(HttpServletRequest request) throws RpcException {
 
         // 初始化路由链
         RouterChainBuilder routerChainBuilder = new RouterChainBuilder();
@@ -59,9 +62,10 @@ public class ApiProxyController extends ApiBaseController {
         RpcBuilder rpcBuilder = new RpcBuilder();
         rpcBuilder
                 .setUri(request.getRequestURI(), true)
+                .setProtocol(HttpProtocol.HTTP)
                 .setRetryCount(runtimeConfig.getOpenGatewayConfig().getRetryCount())
                 .setTimeout(runtimeConfig.getOpenGatewayConfig().getRetryCount())
                 .getRpc()
-                .invoke(getRestTemplate());
+                .invoke(getRestTemplate(), null);
     }
 }
