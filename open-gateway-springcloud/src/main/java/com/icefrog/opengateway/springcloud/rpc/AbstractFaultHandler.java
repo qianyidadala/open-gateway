@@ -11,4 +11,10 @@ package com.icefrog.opengateway.springcloud.rpc;
  * @author IceFrog
  */
 public abstract class AbstractFaultHandler {
+
+    protected RpcContext rpcContext;
+
+    protected AbstractFaultHandler(RpcContext rpcContext) {
+        this.rpcContext = rpcContext;
+    }
 }

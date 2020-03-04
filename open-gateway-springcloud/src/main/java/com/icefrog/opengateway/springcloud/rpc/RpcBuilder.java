@@ -7,6 +7,8 @@
 
 package com.icefrog.opengateway.springcloud.rpc;
 
+import com.icefrog.opengateway.common.base.HttpProtocol;
+
 /**
  * @author IceFrog
  */
@@ -25,33 +27,6 @@ public class RpcBuilder {
         return this.rpc;
     }
 
-    public RpcBuilder setServiceId(String serviceId) {
-        this.ensure().setServiceId(serviceId);
-        return this;
-    }
 
-    public RpcBuilder setUri(String uri, boolean parseServiceId) {
-        this.ensure().setUri(uri);
-        if(parseServiceId) {
-            uri = uri.replaceAll("/", ",");
-            String serviceId = uri.split(",")[1];
-            this.ensure().setServiceId(serviceId);
-        }
-        return this;
-    }
-
-    public RpcBuilder setTimeout(Integer timeout) {
-        this.ensure().setTimeout(timeout);
-        return this;
-    }
-
-    public RpcBuilder setRetryCount(Integer retryCount) {
-        this.ensure().setRetryCount(retryCount);
-        return this;
-    }
-
-    private Rpc ensure(){
-        return this.init();
-    }
 
 }

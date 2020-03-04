@@ -60,12 +60,12 @@ public class ApiProxyController extends ApiBaseController {
         // 初始化调用链
         RuntimeConfig runtimeConfig = openGatewayContext.getRuntimeConfig();
         RpcBuilder rpcBuilder = new RpcBuilder();
-        rpcBuilder
+        /*rpcBuilder
                 .setUri(request.getRequestURI(), true)
                 .setProtocol(HttpProtocol.HTTP)
                 .setRetryCount(runtimeConfig.getOpenGatewayConfig().getRetryCount())
                 .setTimeout(runtimeConfig.getOpenGatewayConfig().getRetryCount())
                 .getRpc()
-                .invoke(getRestTemplate(), null);
+                .invoke(getRestTemplate(), null);*/
     }
 }
