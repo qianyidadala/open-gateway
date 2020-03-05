@@ -22,6 +22,8 @@ public class RpcContext {
 
     private Integer retryCount;
 
+    private boolean isAsync;
+
     private Integer timeout;
 
     private String protocol;
