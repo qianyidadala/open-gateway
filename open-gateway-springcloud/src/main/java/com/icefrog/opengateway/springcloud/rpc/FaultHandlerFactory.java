@@ -96,18 +96,17 @@ public class FaultHandlerFactory {
     }
 
     public AbstractFaultHandler getFailFastHandler() {
-
-        return null;
+        AbstractFaultHandler faultHandler = new FailFastFaultHandler(getContext());
+        return faultHandler;
     }
 
     public AbstractFaultHandler getFailOverHandler() {
-
-        return null;
+        AbstractFaultHandler faultHandler = new FailOverFaultHandler(getContext());
+        return faultHandler;
     }
 
     public AbstractFaultHandler getFailSafeHandler() {
-
-        return null;
+        AbstractFaultHandler faultHandler = new FailSafeFaultHandler(getContext());
+        return faultHandler;
     }
-
 }
