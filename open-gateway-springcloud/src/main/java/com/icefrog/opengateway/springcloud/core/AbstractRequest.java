@@ -7,18 +7,27 @@
 
 package com.icefrog.opengateway.springcloud.core;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
 /**
  * @author IceFrog
  */
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
+@Deprecated
 public abstract class AbstractRequest {
 
     protected int requestId;
 
     protected Map<String, String> requestParams;
+
+    public AbstractRequest(int requestId) {
+        this.requestId = requestId;
+    }
 
 }

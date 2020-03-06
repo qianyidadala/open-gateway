@@ -7,12 +7,13 @@
 
 package com.icefrog.opengateway.springcloud.core;
 
-import lombok.Data;
-
 /**
  * @author IceFrog
  */
-@Data
+@Deprecated
 public class SyncRequest extends AbstractRequest {
 
+    public SyncRequest(int requestId) {
+        super(requestId);
+    }
 }
