@@ -5,7 +5,7 @@
  * @author: icefrog.su@qq.com
  */
 
-package com.icefrog.opengateway.springcloud.rpc;
+package com.icefrog.opengateway.springcloud.core;
 
 /**
  * @author IceFrog
