@@ -8,6 +8,8 @@
 package com.icefrog.opengateway.springcloud.rpc.fault;
 
 import com.icefrog.opengateway.common.base.RpcException;
+import com.icefrog.opengateway.springcloud.config.OpenGatewayConfig;
+import com.icefrog.opengateway.springcloud.core.OpenGatewayThreadPoolExecute;
 import com.icefrog.opengateway.springcloud.core.Response;
 import com.icefrog.opengateway.springcloud.rpc.AbstractFaultRpcHandler;
 import com.icefrog.opengateway.springcloud.rpc.RpcContext;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A quick failure, a failed call, throws an exception and does not retry.
@@ -47,6 +50,15 @@ public class FailFastFaultRpcHandler extends AbstractFaultRpcHandler {
 
     @Override
     public Response doInvokeAsync(RestTemplate template) throws RpcException {
-        return this.doInvoke(template);
+        OpenGatewayConfig openGatewayConfig = rpcContext.getOpenGatewayContext().getRuntimeConfig().getOpenGatewayConfig();
+        OpenGatewayThreadPoolExecute execute = OpenGatewayThreadPoolExecute.getInstance(openGatewayConfig.getCoreSize(), openGatewayConfig.getMaxPoolSize(), 1000, TimeUnit.MILLISECONDS);
+        execute.execute(() -> {
+            try {
+                doInvoke(template);
+            } catch (RpcException e) {
+                e.printStackTrace();
+            }
+        });
+        return new Response().success();
     }
 }

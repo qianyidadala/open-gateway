@@ -8,6 +8,8 @@
 package com.icefrog.opengateway.springcloud.rpc.fault;
 
 import com.icefrog.opengateway.common.base.RpcException;
+import com.icefrog.opengateway.springcloud.config.OpenGatewayConfig;
+import com.icefrog.opengateway.springcloud.core.OpenGatewayThreadPoolExecute;
 import com.icefrog.opengateway.springcloud.core.Response;
 import com.icefrog.opengateway.springcloud.rpc.AbstractFaultRpcHandler;
 import com.icefrog.opengateway.springcloud.rpc.RpcContext;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Failover is retried, depending on the number of retries configured.
@@ -43,6 +46,7 @@ public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
             try {
                 currentRetryCount++;
                 url = rpcContext.getProtocol() + rpcContext.getServiceId() + rpcContext.getUri();
+
                 // The actual load of the failover is left to the balancing policy of the registry itself
                 response = template.getForEntity(new URI(url), Response.class);
                 break;
@@ -62,7 +66,15 @@ public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
 
     @Override
     public Response doInvokeAsync(RestTemplate template) throws RpcException {
-        return null;
+        OpenGatewayConfig openGatewayConfig = rpcContext.getOpenGatewayContext().getRuntimeConfig().getOpenGatewayConfig();
+        OpenGatewayThreadPoolExecute execute = OpenGatewayThreadPoolExecute.getInstance(openGatewayConfig.getCoreSize(), openGatewayConfig.getMaxPoolSize(), 1000, TimeUnit.MILLISECONDS);
+        execute.execute(() -> {
+            try {
+                doInvoke(template);
+            } catch (RpcException e) {
+                e.printStackTrace();
+            }
+        });
+        return new Response().success();
     }
-
 }
