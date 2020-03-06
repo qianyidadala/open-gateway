@@ -9,7 +9,7 @@ package com.icefrog.opengateway.springcloud.rpc.fault;
 
 import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.springcloud.core.Response;
-import com.icefrog.opengateway.springcloud.rpc.AbstractFaultHandler;
+import com.icefrog.opengateway.springcloud.rpc.AbstractFaultRpcHandler;
 import com.icefrog.opengateway.springcloud.rpc.RpcContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +23,12 @@ import java.net.URI;
  * and a response marked correctly is returned
  * The actual load of the failover is left to the balancing policy of the registry itself
  *
- * @see com.icefrog.opengateway.springcloud.rpc.AbstractFaultHandler
+ * @see AbstractFaultRpcHandler
  * @see com.icefrog.opengateway.springcloud.rpc.Invoke
  * @author IceFrog
  */
 @Slf4j
-public class FailOverFaultRpcHandler extends AbstractFaultHandler {
+public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
 
     public FailOverFaultRpcHandler(RpcContext context) {
         super(context);

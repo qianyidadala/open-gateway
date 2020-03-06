@@ -14,11 +14,11 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author IceFrog
  */
-public abstract class AbstractFaultHandler implements Invoke<Response> {
+public abstract class AbstractFaultRpcHandler implements Invoke<Response> {
 
     protected final RpcContext rpcContext;
 
-    protected AbstractFaultHandler(RpcContext rpcContext) {
+    protected AbstractFaultRpcHandler(RpcContext rpcContext) {
         if(rpcContext == null) {
             throw new NullPointerException("rpcContext can not be null");
         }

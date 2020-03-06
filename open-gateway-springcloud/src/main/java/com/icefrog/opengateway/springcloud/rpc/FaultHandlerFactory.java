@@ -14,18 +14,18 @@ import com.icefrog.opengateway.springcloud.rpc.fault.*;
  * Fault Handler Factory. build FaultHandler with FaultHandlerEnum
  *
  * @see FaultHandlerEnum Fault Handler Type
- * @see AbstractFaultHandler Abstracted Faule Handler
- * @see FailBackFaultHandler Fail Back Fault Handler
- * @see FailFastFaultHandler Fail Fast Fault Handler
- * @see FailOverFaultHandler Fail Over Fault Handler
- * @see FailSafeFaultHandler Fail Safe Fault Handler
+ * @see AbstractFaultRpcHandler Abstracted Faule Handler
+ * @see FailBackFaultRpcHandler Fail Back Fault Handler
+ * @see FailFastFaultRpcHandler Fail Fast Fault Handler
+ * @see FailOverFaultRpcHandler Fail Over Fault Handler
+ * @see FailSafeFaultRpcHandler Fail Safe Fault Handler
  * @author IceFrog
  */
 public class FaultHandlerFactory {
 
     private RpcContext context = null;
 
-    private AbstractFaultHandler currentHandler = null;
+    private AbstractFaultRpcHandler currentHandler = null;
 
     public FaultHandlerFactory(RpcContext context) {
         this.context = context;
@@ -55,7 +55,7 @@ public class FaultHandlerFactory {
         return new FaultHandlerFactory(null);
     }
 
-    public AbstractFaultHandler getCurrentHandler() {
+    public AbstractFaultRpcHandler getCurrentHandler() {
         return currentHandler;
     }
 
@@ -67,7 +67,7 @@ public class FaultHandlerFactory {
      * @param faultHandlerType FaultHandler instance type
      * @return AbstractFaultHandler instance,build by faultHandler type
      */
-    public AbstractFaultHandler getFaultHandler(FaultHandlerEnum faultHandlerType) {
+    public AbstractFaultRpcHandler getFaultHandler(FaultHandlerEnum faultHandlerType) {
         if(faultHandlerType == null) {
             throw new NullPointerException("faultHandlerType can not be null");
         }
@@ -86,27 +86,27 @@ public class FaultHandlerFactory {
         }
     }
 
-    public AbstractFaultHandler getDefault() {
+    public AbstractFaultRpcHandler getDefault() {
         return getFailOverHandler();
     }
 
-    public AbstractFaultHandler getFailBackHandler() {
-        AbstractFaultHandler faultHandler = new FailBackFaultHandler(getContext());
+    public AbstractFaultRpcHandler getFailBackHandler() {
+        AbstractFaultRpcHandler faultHandler = new FailBackFaultRpcHandler(getContext());
         return faultHandler;
     }
 
-    public AbstractFaultHandler getFailFastHandler() {
-        AbstractFaultHandler faultHandler = new FailFastFaultHandler(getContext());
+    public AbstractFaultRpcHandler getFailFastHandler() {
+        AbstractFaultRpcHandler faultHandler = new FailFastFaultRpcHandler(getContext());
         return faultHandler;
     }
 
-    public AbstractFaultHandler getFailOverHandler() {
-        AbstractFaultHandler faultHandler = new FailOverFaultHandler(getContext());
+    public AbstractFaultRpcHandler getFailOverHandler() {
+        AbstractFaultRpcHandler faultHandler = new FailOverFaultRpcHandler(getContext());
         return faultHandler;
     }
 
-    public AbstractFaultHandler getFailSafeHandler() {
-        AbstractFaultHandler faultHandler = new FailSafeFaultHandler(getContext());
+    public AbstractFaultRpcHandler getFailSafeHandler() {
+        AbstractFaultRpcHandler faultHandler = new FailSafeFaultRpcHandler(getContext());
         return faultHandler;
     }
 }

@@ -9,14 +9,14 @@ package com.icefrog.opengateway.springcloud.rpc.fault;
 
 import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.springcloud.core.Response;
-import com.icefrog.opengateway.springcloud.rpc.AbstractFaultHandler;
+import com.icefrog.opengateway.springcloud.rpc.AbstractFaultRpcHandler;
 import com.icefrog.opengateway.springcloud.rpc.RpcContext;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * @author IceFrog
  */
-public class FailBackFaultRpcHandler extends AbstractFaultHandler {
+public class FailBackFaultRpcHandler extends AbstractFaultRpcHandler {
 
     public FailBackFaultRpcHandler(RpcContext context) {
         super(context);

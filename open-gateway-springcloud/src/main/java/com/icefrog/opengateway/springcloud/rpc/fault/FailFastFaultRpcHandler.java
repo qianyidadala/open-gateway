@@ -9,7 +9,7 @@ package com.icefrog.opengateway.springcloud.rpc.fault;
 
 import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.springcloud.core.Response;
-import com.icefrog.opengateway.springcloud.rpc.AbstractFaultHandler;
+import com.icefrog.opengateway.springcloud.rpc.AbstractFaultRpcHandler;
 import com.icefrog.opengateway.springcloud.rpc.RpcContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -20,11 +20,11 @@ import java.net.URI;
  * A quick failure, a failed call, throws an exception and does not retry.
  * Implementations in asynchronous mode are consistent with synchronous implementations
  *
- * @see com.icefrog.opengateway.springcloud.rpc.AbstractFaultHandler
+ * @see AbstractFaultRpcHandler
  * @see com.icefrog.opengateway.springcloud.rpc.Invoke
  * @author IceFrog
  */
-public class FailFastFaultRpcHandler extends AbstractFaultHandler {
+public class FailFastFaultRpcHandler extends AbstractFaultRpcHandler {
 
     public FailFastFaultRpcHandler(RpcContext context) {
         super(context);
