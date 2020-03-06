@@ -23,4 +23,12 @@ public class OpenGatewayConfig {
 
     @Value("${opengateway.timeout:1000}")
     private Integer timeout;
+
+    @Value("${opengateway.coreSize:30}")
+    private Integer coreSize;
+
+    @Value("${opengateway.maxPoolSize:50}")
+    private Integer maxPoolSize;
+
+
 }
