@@ -24,9 +24,9 @@ import java.net.URI;
  * @see com.icefrog.opengateway.springcloud.rpc.Invoke
  * @author IceFrog
  */
-public class FailFastFaultHandler extends AbstractFaultHandler {
+public class FailFastFaultRpcHandler extends AbstractFaultHandler {
 
-    public FailFastFaultHandler(RpcContext context) {
+    public FailFastFaultRpcHandler(RpcContext context) {
         super(context);
     }
 

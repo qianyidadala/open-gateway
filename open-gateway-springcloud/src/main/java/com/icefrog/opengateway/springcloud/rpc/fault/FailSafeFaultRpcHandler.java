@@ -16,9 +16,9 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author IceFrog
  */
-public class FailBackFaultHandler extends AbstractFaultHandler {
+public class FailSafeFaultRpcHandler extends AbstractFaultHandler {
 
-    public FailBackFaultHandler(RpcContext context) {
+    public FailSafeFaultRpcHandler(RpcContext context) {
         super(context);
     }
 
@@ -31,5 +31,4 @@ public class FailBackFaultHandler extends AbstractFaultHandler {
     public Response doInvokeAsync(RestTemplate template) throws RpcException {
         return null;
     }
-
 }
