@@ -13,6 +13,6 @@ import lombok.Data;
  * @author IceFrog
  */
 @Data
-public class AsyncRequest extends AbstractRequest{
+public class SyncRequest extends AbstractRequest {
 
 }
