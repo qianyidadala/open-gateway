@@ -8,6 +8,7 @@
 package com.icefrog.opengateway.springcloud.core;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +37,14 @@ public class OpenGatewayThreadPoolExecute {
                 maximumPoolSize,
                 keepAliveTime, unit,
                 new ArrayBlockingQueue<>(maximumPoolSize));
+
+        Runtime.getRuntime().addShutdownHook(new ShutdownHookThread(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                threadPoolExecutor.shutdown();
+                return null;
+            }
+        }));
     }
 
     public void execute(Runnable runnable) {
