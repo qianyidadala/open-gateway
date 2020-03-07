@@ -12,7 +12,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * OpenGatewayApplication for Spring Cloud
@@ -20,7 +19,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @author IceFrog
  */
 @Slf4j
-//@EnableEurekaClient
 @SpringBootApplication
 public class OpenGatewayApplication implements ApplicationRunner {
 
