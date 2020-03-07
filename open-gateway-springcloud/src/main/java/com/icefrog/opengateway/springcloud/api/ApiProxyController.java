@@ -7,6 +7,7 @@
 
 package com.icefrog.opengateway.springcloud.api;
 
+import com.icefrog.opengateway.common.base.FaultHandlerEnum;
 import com.icefrog.opengateway.common.base.HttpProtocol;
 import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.common.web.ApiBaseController;
@@ -59,13 +60,15 @@ public class ApiProxyController extends ApiBaseController {
 
         // 初始化调用链
         RuntimeConfig runtimeConfig = openGatewayContext.getRuntimeConfig();
-        RpcBuilder rpcBuilder = new RpcBuilder();
-        /*rpcBuilder
+        RpcBuilder.newInstance()
                 .setUri(request.getRequestURI(), true)
                 .setProtocol(HttpProtocol.HTTP)
+                .setAsync(false)
                 .setRetryCount(runtimeConfig.getOpenGatewayConfig().getRetryCount())
                 .setTimeout(runtimeConfig.getOpenGatewayConfig().getRetryCount())
-                .getRpc()
-                .invoke(getRestTemplate(), null);*/
+                .setRequest(request)
+                .setOpenGatewayContext(openGatewayContext)
+                .getRpcHandler(FaultHandlerEnum.FAIL_OVER)
+                .invoke(getRestTemplate());
     }
 }
