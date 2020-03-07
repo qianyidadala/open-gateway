@@ -52,11 +52,11 @@ public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
                 break;
             } catch (Exception e) {
                 if (currentRetryCount == rpcContext.getRetryCount()) {
-                    log.error("rpc invoke failed! count to:%d", currentRetryCount);
+                    log.error("rpc invoke failed! count to:{}", currentRetryCount);
                     break;
                 }
                 if (log.isWarnEnabled()) {
-                    log.warn("rpc invoke failed! serviceId:%s, retry:%d, current:%d, message:%s",
+                    log.warn("rpc invoke failed! serviceId:{}, retry:{}, current:{}, message:{}",
                             rpcContext.getServiceId(), rpcContext.getRetryCount(), currentRetryCount, e.getMessage());
                 }
             }

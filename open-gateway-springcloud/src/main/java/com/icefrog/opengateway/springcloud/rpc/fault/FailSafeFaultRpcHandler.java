@@ -38,7 +38,7 @@ public class FailSafeFaultRpcHandler extends AbstractFaultRpcHandler {
             url = rpcContext.getProtocol() + rpcContext.getServiceId() + rpcContext.getUri();
             response = template.getForEntity(new URI(url), Response.class);
         } catch (Exception e) {
-            log.error("invoke failed, serviceId:%s, uri:%s, error-message:%s",
+            log.error("invoke failed, serviceId:{}, uri:{}, error-message:{}",
                     rpcContext.getServiceId(), rpcContext.getUri(), e.getMessage(), e);
         }
         return response.getBody();
@@ -53,7 +53,7 @@ public class FailSafeFaultRpcHandler extends AbstractFaultRpcHandler {
             try {
                 this.doInvoke(template);
             } catch (Exception e) {
-                log.error("invoke failed, serviceId:%s, uri:%s, error-message:%s",
+                log.error("invoke failed, serviceId:{}, uri:{}, error-message:{}",
                         rpcContext.getServiceId(), rpcContext.getUri(), e.getMessage(), e);
             }
         });
