@@ -40,7 +40,7 @@ public abstract class AbstractFaultRpcHandler implements Invoke<Response> {
         return response;
     }
 
-    public abstract Response doInvoke(RestTemplate template) throws RpcException;
+    protected abstract Response doInvoke(RestTemplate template) throws RpcException;
 
-    public abstract Response doInvokeAsync(RestTemplate template) throws RpcException;
+    protected abstract Response doInvokeAsync(RestTemplate template) throws RpcException;
 }
