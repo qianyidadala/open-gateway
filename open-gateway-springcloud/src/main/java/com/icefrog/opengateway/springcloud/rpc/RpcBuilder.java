@@ -43,12 +43,13 @@ public class RpcBuilder {
     }
 
     public RpcBuilder setUri(String uri, boolean parseServiceId) {
-        this.ensure().setUri(uri);
+        String serviceId = null;
         if(parseServiceId) {
-            uri = uri.replaceAll("/", ",");
-            String serviceId = uri.split(",")[1];
+            String uriBak = uri.replaceAll("/", ",");
+            serviceId = uriBak.split(",")[1];
             this.ensure().setServiceId(serviceId);
         }
+        this.ensure().setUri(uri.replaceAll(serviceId, ""));
         return this;
     }
 

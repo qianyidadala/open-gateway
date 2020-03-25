@@ -7,6 +7,7 @@
 
 package com.icefrog.opengateway.springcloud.rpc.fault;
 
+import com.alibaba.fastjson.JSONObject;
 import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.springcloud.config.OpenGatewayConfig;
 import com.icefrog.opengateway.springcloud.core.OpenGatewayThreadPoolExecute;
@@ -14,10 +15,19 @@ import com.icefrog.opengateway.springcloud.core.Response;
 import com.icefrog.opengateway.springcloud.rpc.AbstractFaultRpcHandler;
 import com.icefrog.opengateway.springcloud.rpc.RpcContext;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletInputStream;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @see AbstractFaultRpcHandler
  * @see com.icefrog.opengateway.springcloud.rpc.Invoke
- * @author IceFrog
+ * @author Ice Frog
  */
 @Slf4j
 public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
@@ -40,7 +50,7 @@ public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
     @Override
     public Response doInvoke(RestTemplate template) throws RpcException {
         String url;
-        ResponseEntity<Response> response = null;
+        Response response = null;
         int currentRetryCount = 0;
         while(currentRetryCount < rpcContext.getRetryCount()) {
             try {
@@ -48,7 +58,10 @@ public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
                 url = rpcContext.getProtocol() + rpcContext.getServiceId() + rpcContext.getUri();
 
                 // The actual load of the failover is left to the balancing policy of the registry itself
-                response = template.getForEntity(new URI(url), Response.class);
+                ResponseEntity<String> entity = template.getForEntity(new URI(url), String.class);
+                String body = entity.getBody();
+                response = new Response<HashMap>().success("successfully",
+                        (HashMap) JSONObject.parseObject(body).getInnerMap());
                 break;
             } catch (Exception e) {
                 if (currentRetryCount == rpcContext.getRetryCount()) {
@@ -61,7 +74,7 @@ public class FailOverFaultRpcHandler extends AbstractFaultRpcHandler {
                 }
             }
         }
-        return response.getBody();
+        return response;
     }
 
     @Override

@@ -13,18 +13,21 @@ import com.icefrog.opengateway.common.base.RpcException;
 import com.icefrog.opengateway.common.web.ApiBaseController;
 import com.icefrog.opengateway.springcloud.config.RuntimeConfig;
 import com.icefrog.opengateway.springcloud.core.OpenGatewayContext;
+import com.icefrog.opengateway.springcloud.core.Response;
 import com.icefrog.opengateway.springcloud.router.*;
 import com.icefrog.opengateway.springcloud.rpc.RpcBuilder;
+import com.icefrog.opengateway.springcloud.rpc.convertor.GatewayDefHttpMessageConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * @author IceFrog
@@ -40,12 +43,16 @@ public class ApiProxyController extends ApiBaseController {
     @Bean
     @LoadBalanced
     public RestTemplate getRestTemplate() {
-        return new RestTemplate();
+        RestTemplate template = new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = template.getMessageConverters();
+        messageConverters.add(new GatewayDefHttpMessageConvert());
+        template.setMessageConverters(messageConverters);
+        return template;
     }
 
 
     @RequestMapping("/**")
-    public void proxy(HttpServletRequest request) throws RpcException {
+    public Response proxy(HttpServletRequest request) throws RpcException {
 
         // 初始化路由链
         RouterChainBuilder routerChainBuilder = new RouterChainBuilder();
@@ -60,7 +67,7 @@ public class ApiProxyController extends ApiBaseController {
 
         // 初始化调用链
         RuntimeConfig runtimeConfig = openGatewayContext.getRuntimeConfig();
-        RpcBuilder.newInstance()
+        Response response = RpcBuilder.newInstance()
                 .setUri(request.getRequestURI(), true)
                 .setProtocol(HttpProtocol.HTTP)
                 .setAsync(false)
@@ -70,5 +77,6 @@ public class ApiProxyController extends ApiBaseController {
                 .setOpenGatewayContext(openGatewayContext)
                 .getRpcHandler(FaultHandlerEnum.FAIL_OVER)
                 .invoke(getRestTemplate());
+        return response;
     }
 }
